@@ -112,6 +112,19 @@ class CaesarHOUNIDB:
         FROM users_cleared,user_applicant_view
         WHERE email = '%s' AND password = '%s';
         """
+        self.update_record = f"""
+        UPDATE work_place_applicant
+        SET job_title = '%s'
+        WHERE work_place_applicant.applicant_uuid = (SELECT applicant_uuid FROM applicants
+        WHERE applicants.first_name= '%s')
+        RETURNING *;
+    """
+        self.get_updated_record = f"""
+
+        SELECT * FROM user_applicant_view
+        WHERE user_applicant_view.applicant_uuid = (SELECT applicant_uuid FROM applicants
+        WHERE applicants.first_name= '%s')
+        """
         nationality_uuid = "6737b17c-08ad-4f59-ae9c-b3ca49657bc7" #uuid.uuid4()
         applicant_uuid = "d41eca28-bcbf-4742-a657-be642daf18f1" #uuid.uuid4()
         criminal_offense_uuid = "ff95a155-8893-4f90-95a9-967273fb815d"
